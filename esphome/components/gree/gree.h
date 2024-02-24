@@ -34,15 +34,15 @@ const uint32_t GREE_HEADER_SPACE = 4000;
 const uint32_t GREE_BIT_MARK = 620;
 const uint32_t GREE_ONE_SPACE = 1600;
 const uint32_t GREE_ZERO_SPACE = 540;
-const uint32_t GREE_MESSAGE_SPACE = 19000;
+const uint32_t GREE_MESSAGE_SPACE = 26000;
 
 // Timing specific for YAC features (I-Feel mode)
-const uint32_t GREE_YAC_HEADER_MARK = 6000;
-const uint32_t GREE_YAC_HEADER_SPACE = 3000;
+const uint32_t GREE_YAC_HEADER_MARK = 9000;
+const uint32_t GREE_YAC_HEADER_SPACE = 4500;
 const uint32_t GREE_YAC_BIT_MARK = 650;
 
 // State Frame size
-const uint8_t GREE_STATE_FRAME_SIZE = 8;
+const uint8_t GREE_STATE_FRAME_SIZE = 16;
 
 // Only available on YAN
 // Vertical air directions. Note that these cannot be set on all heat pumps
