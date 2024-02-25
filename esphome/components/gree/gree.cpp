@@ -9,10 +9,10 @@ static const char *const TAG = "gree.climate";
 void GreeClimate::set_model(Model model) { this->model_ = model; }
 
 void GreeClimate::transmit_state() {
-  uint8_t remote_state[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00};
+  uint8_t remote_state[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0xA0, 0x00, 0x00, 0x00, 0xA0};
 
   remote_state[0] = this->fan_speed_() | this->operation_mode_();
-  remote_state[1] = this->temperature_();
+  remote_state[1] = this->temperature_() & 0x0F;
 
   if (this->model_ == GREE_YAN) {
     remote_state[2] = 0x60;
@@ -25,7 +25,7 @@ void GreeClimate::transmit_state() {
   }
 
   if (this->model_ == GREE_YAA || this->model_ == GREE_YAC) {
-    remote_state[2] = 0x20;  // bits 0..3 always 0000, bits 4..7 TURBO,LIGHT,HEALTH,X-FAN
+    remote_state[2] = 0x60;  // bits 0..3 always 0000, bits 4..7 TURBO,LIGHT,HEALTH,X-FAN
     remote_state[3] = 0x50;  // bits 4..7 always 0101
     remote_state[6] = 0x00;  //
 
@@ -82,6 +82,21 @@ void GreeClimate::transmit_state() {
   }
 
   data->mark(GREE_BIT_MARK);
+  data->space(GREE_MESSAGE_SPACE);
+  data->space(GREE_MESSAGE_SPACE);
+
+  data->mark(GREE_HEADER_MARK);
+  data->space(GREE_HEADER_SPACE);
+
+  for (int i = 8; i < 12; i++) {
+    for (uint8_t mask = 1; mask > 0; mask <<= 1) {  // iterate through bit mask
+      data->mark(GREE_BIT_MARK);
+      bool bit = remote_state[i] & mask;
+      data->space(bit ? GREE_ONE_SPACE : GREE_ZERO_SPACE);
+    }
+  }
+
+  data->mark(GREE_BIT_MARK);
   data->space(GREE_ZERO_SPACE);
   data->mark(GREE_BIT_MARK);
   data->space(GREE_ONE_SPACE);
@@ -90,6 +105,15 @@ void GreeClimate::transmit_state() {
 
   data->mark(GREE_BIT_MARK);
   data->space(GREE_MESSAGE_SPACE);
+
+  for (int i = 12; i < 16; i++) {
+    for (uint8_t mask = 1; mask > 0; mask <<= 1) {  // iterate through bit mask
+      data->mark(GREE_BIT_MARK);
+      bool bit = remote_state[i] & mask;
+      data->space(bit ? GREE_ONE_SPACE : GREE_ZERO_SPACE);
+    }
+  }
+
   data->mark(GREE_BIT_MARK);
   data->space(0);
 

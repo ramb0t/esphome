@@ -30,11 +30,11 @@ const uint8_t GREE_FAN_TURBO = 0x80;
 // IR Transmission
 const uint32_t GREE_IR_FREQUENCY = 38000;
 const uint32_t GREE_HEADER_MARK = 9000;
-const uint32_t GREE_HEADER_SPACE = 4000;
-const uint32_t GREE_BIT_MARK = 620;
+const uint32_t GREE_HEADER_SPACE = 4500;
+const uint32_t GREE_BIT_MARK = 650;
 const uint32_t GREE_ONE_SPACE = 1600;
-const uint32_t GREE_ZERO_SPACE = 540;
-const uint32_t GREE_MESSAGE_SPACE = 26000;
+const uint32_t GREE_ZERO_SPACE = 550;
+const uint32_t GREE_MESSAGE_SPACE = 20000;
 
 // Timing specific for YAC features (I-Feel mode)
 const uint32_t GREE_YAC_HEADER_MARK = 9000;
